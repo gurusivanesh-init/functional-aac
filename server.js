@@ -76,8 +76,7 @@ const server = http.createServer(async (req, res) => {
         const paired = db.getPairedDevice();
         return sendJson(res, 200, {
           status: 'connected',
-          database: 'SQLite',
-          databaseFile: 'aac_database.sqlite',
+          database: db.getEngineName(),
           phraseCount: phrases.length,
           device: paired
         });
