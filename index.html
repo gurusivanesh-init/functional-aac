@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Functional AAC - Phrase Library & Custom Communication Suite</title>
+  <meta name="description" content="Real-world practical AAC communication platform for individuals, caregivers, and assistive devices with QR pairing, age personalization, light/dark mode, and real-time synchronization.">
+  
+  <!-- Modern Typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Modular CSS Styling -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/accessibility.css">
+  <link rel="stylesheet" href="css/onboarding.css">
+  <link rel="stylesheet" href="css/caregiver.css">
+  <link rel="stylesheet" href="css/device.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/modal.css">
+
+  <!-- Real Optical QR Code Decoder Engine -->
+  <script src="js/jsQR.js"></script>
+</head>
+<body>
+
+  <!-- Top Application Navigation Header (Clean, Accessible, Multilingual) -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-section">
+        <div class="brand-icon-bubble">💬</div>
+        <div class="brand-text">
+          <h1 id="appHeaderTitle">Functional AAC</h1>
+          <span class="brand-subtitle" id="appHeaderSubtitle">Caregiver Communication Suite &amp; Physical Device Manager</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- 5-Language Selector Dropdown -->
+        <div class="lang-selector-dropdown-wrap">
+          <button id="btnLangDropdown" class="lang-selector-btn" title="Select Language / மொழியை மாற்றவும்" aria-haspopup="true" aria-expanded="false">
+            <span id="currentLangFlag">🇬🇧</span>
+            <span id="currentLangName">English</span>
+            <span class="dropdown-caret">▾</span>
+          </button>
+          <div id="langDropdownMenu" class="lang-dropdown-menu" style="display: none;">
+            <button class="lang-option-btn selected" data-lang-code="en">
+              <span>🇬🇧</span>
+              <strong>English</strong>
+              <span class="lang-native-name">English</span>
+            </button>
+            <button class="lang-option-btn" data-lang-code="ta">
+              <span>🇮🇳</span>
+              <strong>Tamil</strong>
+              <span class="lang-native-name">தமிழ்</span>
+            </button>
+            <button class="lang-option-btn" data-lang-code="te">
+              <span>🇮🇳</span>
+              <strong>Telugu</strong>
+              <span class="lang-native-name">తెలుగు</span>
+            </button>
+            <button class="lang-option-btn" data-lang-code="kn">
+              <span>🇮🇳</span>
+              <strong>Kannada</strong>
+              <span class="lang-native-name">ಕನ್ನಡ</span>
+            </button>
+            <button class="lang-option-btn" data-lang-code="hi">
+              <span>🇮🇳</span>
+              <strong>Hindi</strong>
+              <span class="lang-native-name">हिन्दी</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Accessibility Menu Toggle Button -->
+        <button id="btnAccessibilityToggle" class="a11y-header-btn" title="Accessibility &amp; Display Options (Font Size, Contrast, Dark Mode)">
+          <span class="a11y-icon">♿</span>
+          <span class="a11y-label">Accessibility</span>
+        </button>
+
+        <!-- Quick Light / Dark Mode Toggle Button -->
+        <button id="btnToggleTheme" class="theme-toggle-btn" title="Toggle between Bright Light Mode and Dark Mode">
+          <span id="themeToggleIcon">🌙</span>
+          <span id="themeToggleLabel">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Accessibility Flyout Panel & Overlay -->
+  <div id="a11yOverlay" class="accessibility-flyout-overlay"></div>
+  <div id="a11yFlyout" class="accessibility-flyout" role="dialog" aria-modal="true" aria-label="Accessibility &amp; Display Options">
+    <div class="a11y-flyout-head">
+      <div class="a11y-flyout-title">
+        <span class="a11y-icon">♿</span>
+        <span>Accessibility &amp; Display</span>
+      </div>
+      <button id="btnCloseA11y" class="a11y-close-btn" aria-label="Close accessibility options">&times;</button>
+    </div>
+
+    <!-- 1. Text Size Scaling -->
+    <div class="a11y-section">
+      <span class="a11y-section-label">Text Size Scaling</span>
+      <div class="a11y-font-grid">
+        <button class="font-scale-btn" data-scale="0.85">
+          <span style="font-size: 0.85rem;">A-</span>
+          <span class="scale-label">Small</span>
+        </button>
+        <button class="font-scale-btn selected" data-scale="1.0">
+          <span style="font-size: 1rem;">A</span>
+          <span class="scale-label">Normal</span>
+        </button>
+        <button class="font-scale-btn" data-scale="1.15">
+          <span style="font-size: 1.15rem;">A+</span>
+          <span class="scale-label">Large</span>
+        </button>
+        <button class="font-scale-btn" data-scale="1.3">
+          <span style="font-size: 1.3rem;">A++</span>
+          <span class="scale-label">X-Large</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. Contrast Options -->
+    <div class="a11y-section">
+      <span class="a11y-section-label">Contrast Mode</span>
+      <div class="contrast-options-grid">
+        <button class="contrast-pill-btn selected" data-contrast-mode="default">
+          <span>Standard Balanced Contrast</span>
+          <span>✓</span>
+        </button>
+        <button class="contrast-pill-btn" data-contrast-mode="high-yellow">
+          <span style="color: #eab308; font-weight: 700;">● High Contrast (Yellow / Black)</span>
+          <span style="font-size: 0.72rem; opacity: 0.8;">CVI Mode</span>
+        </button>
+        <button class="contrast-pill-btn" data-contrast-mode="high-blue">
+          <span style="color: #38bdf8; font-weight: 700;">● High Contrast (Blue / White)</span>
+          <span style="font-size: 0.72rem; opacity: 0.8;">High Clarity</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Appearance Theme Toggle -->
+    <div class="a11y-section">
+      <span class="a11y-section-label">Appearance Theme</span>
+      <div class="a11y-theme-grid">
+        <button class="a11y-theme-btn selected" id="a11yThemeLight" data-theme-val="light">
+          <span>☀️</span> Light
+        </button>
+        <button class="a11y-theme-btn" id="a11yThemeDark" data-theme-val="dark">
+          <span>🌙</span> Dark
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. Additional Accessibility Options -->
+    <div class="a11y-section">
+      <div class="a11y-toggle-row">
+        <div class="a11y-toggle-text">
+          <strong>Reduced Motion</strong>
+          <span>Disable animations for vestibular sensitivity</span>
+        </div>
+        <label class="toggle-switch-wrap">
+          <input type="checkbox" id="a11yReducedMotion">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="a11y-toggle-row">
+        <div class="a11y-toggle-text">
+          <strong>Tactile Click Chime</strong>
+          <span>Audible feedback chime on tile press</span>
+        </div>
+        <label class="toggle-switch-wrap">
+          <input type="checkbox" id="a11ySoundClicks" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VIEW 1: QR SCANNER & AGE GROUP ONBOARDING ==================== -->
+  <div id="view-onboarding" class="onboarding-container" style="display: none;">
+    <div class="onboarding-card">
+      <div class="onboarding-header">
+        <div class="onboarding-badge">🔗 Assistive Device Linking</div>
+        <h2>Connect Your Physical AAC Device</h2>
+        <p>Scan the QR code on your communication device and select the communicator's age profile to calibrate vocabulary and voice synthesis.</p>
+
+        <!-- Step Indicator -->
+        <div class="stepper-nav">
+          <div class="stepper-step active" id="stepperStep1">
+            <span class="step-num">1</span>
+            <span>QR Device Scanner</span>
+          </div>
+          <div class="stepper-line" id="stepperLine"></div>
+          <div class="stepper-step" id="stepperStep2">
+            <span class="step-num">2</span>
+            <span>Select Age Group</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: Real Optical QR Code Scanner -->
+      <div class="step-pane active" id="paneStep1">
+        <div class="qr-scanner-layout">
+          <!-- QR Viewfinder Box -->
+          <div class="qr-viewfinder-box">
+            <video id="qrCameraVideo" class="qr-camera-feed" playsinline muted></video>
+            <canvas id="qrScanCanvas" class="qr-scan-canvas-overlay" style="display: none;"></canvas>
+            
+            <div class="qr-laser-line"></div>
+            
+            <div class="qr-target-frame">
+              <span class="qr-corner-tr"></span>
+              <span class="qr-corner-bl"></span>
+              
+              <!-- Real Scannable Device QR Pattern -->
+              <div class="qr-sample-wrap" id="qrSampleVisual">
+                <img id="sampleQrImg" src="assets/device_qr_sample.svg" alt="Real AAC Device QR Code">
+                <div class="qr-sample-label">AAC-PRO-8892</div>
+              </div>
+            </div>
+
+            <div class="viewfinder-status" id="qrCameraStatus">
+              <span>📷</span> Point camera at device QR code
+            </div>
+          </div>
+
+          <!-- Scanner Controls & Quick Connect -->
+          <div class="qr-info-panel">
+            <h3>Pair Physical AAC Hardware</h3>
+            <p>Scan any QR code using your webcam, upload an image containing a QR code, or read the onscreen device QR code directly.</p>
+
+            <!-- Real Optical Read of Onscreen QR Code -->
+            <button class="qr-quick-connect-btn" id="btnScanSampleQr" title="Decode the actual QR code on screen using jsQR">
+              <span>⚡</span> Read Onscreen QR Code (AAC-PRO-8892)
+            </button>
+
+            <!-- Live Webcam Scanner -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <button class="btn btn-secondary" id="btnStartRealCamera" title="Start live camera scan">
+                <span>📷</span> Start Camera
+              </button>
+              <button class="btn btn-secondary" id="btnUploadQrImage" title="Upload QR image file to decode">
+                <span>📁</span> Upload Image
+              </button>
+            </div>
+            <input type="file" id="qrFileInput" accept="image/*" style="display: none;">
+
+            <div class="or-divider">Or enter device ID manually</div>
+
+            <div class="manual-code-row">
+              <input type="text" id="manualDeviceCodeInput" value="AAC-PRO-8892" placeholder="e.g. AAC-PRO-8892">
+              <button class="btn btn-secondary" id="btnManualPair">Pair</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Age Group Selection -->
+      <div class="step-pane" id="paneStep2">
+        <div class="age-group-step-wrap">
+          <div class="age-step-intro">
+            <h3>Who will be using this AAC Communicator?</h3>
+            <p>Select the communicator's age group to tailor default vocabulary priorities, voice pitch, and category focus.</p>
+          </div>
+
+          <!-- Age Group Selection Cards -->
+          <div class="age-cards-grid">
+            
+            <!-- Children (Selected by default) -->
+            <div class="age-card selected" data-age="Children">
+              <span class="age-check-circle"></span>
+              <div class="age-card-header">
+                <span class="age-card-icon">🧒</span>
+                <div>
+                  <div class="age-card-title">Children</div>
+                  <div class="age-card-range">Ages 3 – 12</div>
+                </div>
+              </div>
+              <p class="age-card-desc">Visual icons, friendly cheerful voice pitch, core needs (Home, School, Family, Play, Toilet, Rest).</p>
+              <div class="age-features-pills">
+                <span class="age-pill">🧸 Play &amp; School</span>
+                <span class="age-pill">🔊 Higher Pitch Voice</span>
+                <span class="age-pill">🖼️ High Visual Symbols</span>
+              </div>
+            </div>
+
+            <!-- Teenagers -->
+            <div class="age-card" data-age="Teenagers">
+              <span class="age-check-circle"></span>
+              <div class="age-card-header">
+                <span class="age-card-icon">🧑</span>
+                <div>
+                  <div class="age-card-title">Teenagers</div>
+                  <div class="age-card-range">Ages 13 – 17</div>
+                </div>
+              </div>
+              <p class="age-card-desc">School assignments, public transit, social conversations, feelings, independence, and peer interaction.</p>
+              <div class="age-features-pills">
+                <span class="age-pill">🚌 Transit &amp; Friends</span>
+                <span class="age-pill">📖 Studies Focus</span>
+                <span class="age-pill">🤝 Peer Interaction</span>
+              </div>
+            </div>
+
+            <!-- Adults -->
+            <div class="age-card" data-age="Adults">
+              <span class="age-check-circle"></span>
+              <div class="age-card-header">
+                <span class="age-card-icon">👨</span>
+                <div>
+                  <div class="age-card-title">Adults</div>
+                  <div class="age-card-range">Ages 18+</div>
+                </div>
+              </div>
+              <p class="age-card-desc">Workplace communication, healthcare requests, appointments, community transit, and independent living.</p>
+              <div class="age-features-pills">
+                <span class="age-pill">💼 Work &amp; Tasks</span>
+                <span class="age-pill">🩺 Healthcare</span>
+                <span class="age-pill">🗣️ Natural Adult Tone</span>
+              </div>
+            </div>
+
+            <!-- All Ages -->
+            <div class="age-card" data-age="All Ages">
+              <span class="age-check-circle"></span>
+              <div class="age-card-header">
+                <span class="age-card-icon">🌐</span>
+                <div>
+                  <div class="age-card-title">All Ages</div>
+                  <div class="age-card-range">Universal Setup</div>
+                </div>
+              </div>
+              <p class="age-card-desc">Comprehensive access across all 10 real-world categories without age-based filtering.</p>
+              <div class="age-features-pills">
+                <span class="age-pill">🌟 Full Starter Set</span>
+                <span class="age-pill">🚨 All Emergency Phrases</span>
+                <span class="age-pill">⚡ Balanced Tone</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Step 2 Actions -->
+          <div class="age-step-actions">
+            <button class="btn btn-secondary" id="btnBackToQrScan">
+              ← Back to QR Scanner
+            </button>
+            <button class="btn btn-primary" id="btnCompleteSetupAndGoHome" style="padding: 12px 28px; font-size: 1rem;">
+              Complete Setup &amp; Open Home Page →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VIEW 2: MAIN HOME TABBED WORKSPACE ==================== -->
+  <main id="view-main" class="app-workspace">
+    
+    <!-- Top-Level Clean Navigation Tabs -->
+    <div class="tabs-navigation-bar" style="margin-bottom: 24px;">
+      <div class="tabs-group" role="tablist">
+        <button class="tab-nav-btn active" data-tab="communicator" role="tab" id="tabCommunicatorBtn">
+          <span>📱</span> AAC Communicator (Home)
+        </button>
+        <button class="tab-nav-btn" data-tab="library" role="tab" id="tabLibraryBtn">
+          <span>📖</span> Phrase Library
+        </button>
+        <button class="tab-nav-btn" data-tab="custom" role="tab" id="tabCustomBtn">
+          <span>⭐</span> My Custom Phrases <span class="tab-badge" id="customTabCountBadge">3</span>
+        </button>
+        <button class="tab-nav-btn" data-tab="settings" role="tab" id="tabSettingsBtn">
+          <span>⚙️</span> Settings &amp; Device
+          <span id="settingsTabPendingDot" class="tab-pending-dot" style="display: none;" title="Changes pending sync"></span>
+        </button>
+      </div>
+
+      <div class="backup-actions">
+        <button class="btn-ghost-sm" id="btnQuickSettings" title="Jump to Settings">
+          <span>⚙️</span> Quick Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: 📱 AAC COMMUNICATOR (PURE, CLEAN, FOCUSED HOME DEVICE VIEW) -->
+    <div id="panel-communicator" class="tab-view-panel active">
+      <div class="communicator-stage">
+        <div class="device-preview-wrapper" aria-label="Physical AAC Device Live Communicator">
+          <div class="device-preview-header">
+            <h2>
+              <span>📱</span> Physical AAC Device (Live Mirror)
+            </h2>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="badge badge-normal" id="communicatorDeviceBadge">Device: AAC-PRO-8892</span>
+              <span class="badge badge-normal" id="communicatorAgeBadge">Profile: Children</span>
+              <span class="preview-live-badge">Live Mirror</span>
+            </div>
+          </div>
+
+          <!-- Physical Tablet Mount Point (Pure AAC Device) -->
+          <div id="devicePreviewMount">
+            <!-- Rendered by DevicePreview class in js/device.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: 📖 PHRASE LIBRARY VIEW -->
+    <div id="panel-library" class="tab-view-panel">
+      <div class="tab-content-container">
+        
+        <!-- Key Statistics Dashboard Ribbon -->
+        <div class="stats-ribbon">
+          <div class="stat-card">
+            <div class="stat-icon icon-blue">📚</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statTotalPhrases">82</div>
+              <div class="stat-title">Total Phrases</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon icon-purple">✨</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statCustomPhrases">3</div>
+              <div class="stat-title">Caregiver Custom</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon icon-emerald">📱</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statActiveOnDevice">82</div>
+              <div class="stat-title">Active on Device</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon icon-emergency">🚨</div>
+            <div class="stat-info">
+              <div class="stat-value" id="statEmergencyPhrases">10</div>
+              <div class="stat-title">Emergency SOS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search, Category and Filter Toolbar -->
+        <div class="filter-search-toolbar">
+          <div class="search-input-wrap">
+            <span class="search-icon-symbol">🔍</span>
+            <input type="text" id="globalSearchInput" class="search-input" placeholder="Search functional phrases (e.g. 'water', 'help', 'toilet', 'ticket')...">
+          </div>
+
+          <div class="filter-dropdowns-row">
+            <select id="filterCategorySelect" class="select-filter" aria-label="Filter by Category">
+              <option value="All">All Categories</option>
+            </select>
+
+            <select id="filterAgeSelect" class="select-filter" aria-label="Filter by Age Group">
+              <option value="All">All Age Groups</option>
+              <option value="Children">Children</option>
+              <option value="Teenagers">Teenagers</option>
+              <option value="Adults">Adults</option>
+              <option value="All Ages">All Ages</option>
+            </select>
+
+            <select id="filterPrioritySelect" class="select-filter" aria-label="Filter by Priority">
+              <option value="All">All Priorities</option>
+              <option value="Normal">Normal</option>
+              <option value="Important">Important</option>
+              <option value="Emergency">Emergency SOS</option>
+            </select>
+
+            <select id="filterStatusSelect" class="select-filter" aria-label="Filter by Device Status">
+              <option value="All">All Statuses</option>
+              <option value="Enabled">Active on Device</option>
+              <option value="Disabled">Hidden / Inactive</option>
+            </select>
+
+            <div class="category-batch-actions">
+              <button class="btn btn-primary btn-sm" id="btnAddPhraseFromLibrary" title="Create a new communication phrase">
+                <span>+</span> Add New Phrase
+              </button>
+              <button class="btn-ghost-sm" id="btnSelectAllCategory" title="Enable all phrases in selected category for device">
+                ✓ Enable Category
+              </button>
+              <button class="btn-ghost-sm" id="btnDeselectAllCategory" title="Disable all phrases in selected category from device">
+                ✕ Disable Category
+              </button>
+            </div>
+          </div>
+
+          <!-- Horizontal Category Pills Scroll -->
+          <div class="category-pills-scroll">
+            <div class="category-pills-wrap" id="categoryPillsContainer">
+              <!-- Dynamically populated category pills -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Phrase Cards Grid -->
+        <div id="phraseLibraryList">
+          <!-- Dynamically populated phrase cards -->
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 3: ⭐ MY CUSTOM PHRASES VIEW -->
+    <div id="panel-custom" class="tab-view-panel">
+      <div class="tab-content-container">
+        <div id="customPhrasesList">
+          <!-- Dynamically populated custom phrases -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: ⚙️ SETTINGS & DEVICE CONFIG VIEW (CENTRALIZED CONTROLS) -->
+    <div id="panel-settings" class="tab-view-panel">
+      <div class="settings-container">
+        
+        <!-- Settings Header Banner -->
+        <div class="settings-header-banner">
+          <div class="settings-banner-info">
+            <h2>⚙️ System &amp; Communicator Settings</h2>
+            <p>Customize appearance theme, speech synthesis engine, touch grid layout, device pairing, and data backups.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div id="settingsSyncBadge" class="sync-indicator badge-synced" title="Current hardware synchronization state">
+              <i class="icon-check">✓</i> Device in Sync
+            </div>
+            <button class="btn btn-primary" id="btnSyncFromSettings">
+              <span>🔄</span> Sync to AAC Device
+            </button>
+          </div>
+        </div>
+
+        <!-- Settings Cards Grid -->
+        <div class="settings-grid">
+          
+          <!-- 1. Appearance & Theme -->
+          <div class="settings-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon">🎨</div>
+              <div class="settings-card-title">
+                <h3>Appearance &amp; Theme</h3>
+                <p>Switch between Bright Clean Light UI and Dark Mode</p>
+              </div>
+            </div>
+
+            <div class="theme-options-grid">
+              <div class="theme-option-card selected" id="optThemeLight" data-theme-val="light">
+                <span class="theme-option-icon">☀️</span>
+                <div>
+                  <strong>Bright Light</strong>
+                  <span>Crisp, high clarity</span>
+                </div>
+              </div>
+
+              <div class="theme-option-card" id="optThemeDark" data-theme-val="dark">
+                <span class="theme-option-icon">🌙</span>
+                <div>
+                  <strong>Dark Mode</strong>
+                  <span>Sleek, low glare</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <strong>High Contrast Mode</strong>
+                <span>Yellow on black contrast for cortical/visual impairment</span>
+              </div>
+              <label class="toggle-switch-wrap">
+                <input type="checkbox" id="settingsHighContrast">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <!-- Language Switcher in Settings -->
+            <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div class="setting-label">
+                <strong>AAC Spoken &amp; Interface Language</strong>
+                <span>Select from 5 supported languages (English, தமிழ், తెలుగు, ಕನ್ನಡ, हिन्दी)</span>
+              </div>
+              <div class="settings-lang-pills" style="display: flex; gap: 6px; flex-wrap: wrap; width: 100%;">
+                <button class="btn btn-secondary btn-sm settings-lang-btn selected" data-settings-lang="en">🇬🇧 English</button>
+                <button class="btn btn-secondary btn-sm settings-lang-btn" data-settings-lang="ta">🇮🇳 தமிழ்</button>
+                <button class="btn btn-secondary btn-sm settings-lang-btn" data-settings-lang="te">🇮🇳 తెలుగు</button>
+                <button class="btn btn-secondary btn-sm settings-lang-btn" data-settings-lang="kn">🇮🇳 ಕನ್ನಡ</button>
+                <button class="btn btn-secondary btn-sm settings-lang-btn" data-settings-lang="hi">🇮🇳 हिन्दी</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Touch Grid Layout Density -->
+          <div class="settings-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon">📐</div>
+              <div class="settings-card-title">
+                <h3>Communicator Touch Grid</h3>
+                <p>Adjust touch button size for physical motor skills</p>
+              </div>
+            </div>
+
+            <div class="setting-label">
+              <strong>Select Tile Density</strong>
+              <span>Choose based on touch accuracy and visual scanning</span>
+            </div>
+
+            <div class="density-options-wrap">
+              <button class="density-btn" data-density="2x2">2x2 (Large)</button>
+              <button class="density-btn" data-density="2x3">2x3 (Comfort)</button>
+              <button class="density-btn selected" data-density="3x3">3x3 (Standard)</button>
+              <button class="density-btn" data-density="4x3">4x3 (Compact)</button>
+            </div>
+          </div>
+
+          <!-- 3. Speech Synthesis & Voice Engine -->
+          <div class="settings-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon">🔊</div>
+              <div class="settings-card-title">
+                <h3>Speech Synthesis &amp; Voice Engine</h3>
+                <p>Calibrate speech voice, speed, pitch, and haptic feedback</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="selectVoiceEngine">Voice Speaker</label>
+              <select id="selectVoiceEngine" class="form-select">
+                <option value="">Default System Natural Voice</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label" style="flex: 1;">
+                <strong>Speech Rate (Speed)</strong>
+                <div class="range-slider-wrap">
+                  <input type="range" id="sliderVoiceRate" class="range-slider" min="0.6" max="1.4" step="0.05" value="0.95">
+                  <span class="range-slider-val" id="valVoiceRate">0.95x</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label" style="flex: 1;">
+                <strong>Voice Pitch (Tone)</strong>
+                <div class="range-slider-wrap">
+                  <input type="range" id="sliderVoicePitch" class="range-slider" min="0.8" max="1.5" step="0.05" value="1.0">
+                  <span class="range-slider-val" id="valVoicePitch">1.0x</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <strong>Tactile Sound Click</strong>
+                <span>Play audible feedback chime on tile press</span>
+              </div>
+              <label class="toggle-switch-wrap">
+                <input type="checkbox" id="settingsSoundClicks" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <button class="btn btn-secondary" id="btnTestVoiceSettings">
+              <span>🔊</span> Test Speech Voice Output
+            </button>
+          </div>
+
+          <!-- 4. Active Profile & Physical Device Link -->
+          <div class="settings-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon">📱</div>
+              <div class="settings-card-title">
+                <h3>Active Communicator &amp; Hardware</h3>
+                <p>Manage paired physical tablet and age group calibration</p>
+              </div>
+            </div>
+
+            <div class="setting-label">
+              <strong>Active Age Profile</strong>
+              <span>Tuning vocabulary recommendations and default pitch</span>
+            </div>
+
+            <div class="profile-pill-options">
+              <button class="profile-pill-btn selected" data-profile-age="Children">🧒 Children</button>
+              <button class="profile-pill-btn" data-profile-age="Teenagers">🧑 Teenagers</button>
+              <button class="profile-pill-btn" data-profile-age="Adults">👨 Adults</button>
+              <button class="profile-pill-btn" data-profile-age="All Ages">🌐 All Ages</button>
+            </div>
+
+            <!-- Hardware Paired Details -->
+            <div class="device-hardware-info">
+              <div class="device-hardware-meta">
+                <span class="device-hardware-icon">📱</span>
+                <div>
+                  <strong id="settingsDeviceName">Alex's Communicator Pro</strong>
+                  <span id="settingsDeviceId">ID: AAC-PRO-8892 • Firmware v2.4.0</span>
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btnReScanFromSettings">
+                <span>📷</span> Scan QR
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Data Backups & Export -->
+          <div class="settings-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon">💾</div>
+              <div class="settings-card-title">
+                <h3>Backup &amp; Device Configuration</h3>
+                <p>Export JSON backups or restore phrases across devices</p>
+              </div>
+            </div>
+
+            <p style="font-size: 0.84rem; color: var(--text-secondary);">
+              Download a complete snapshot of all active phrases, caregiver custom phrases, and speech settings.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button class="btn btn-secondary" id="btnExportJsonSettings">
+                <span>💾</span> Export Backup JSON
+              </button>
+              <button class="btn btn-secondary" id="btnImportJsonSettings">
+                <span>📂</span> Restore JSON
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. SQLite Relational Database Engine -->
+          <div class="settings-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon">🗄️</div>
+              <div class="settings-card-title">
+                <h3>SQLite Database Engine</h3>
+                <p>Local SQL relational storage &amp; offline bridge</p>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <strong>Database Status</strong>
+                <span id="dbStatusDetails">Connected to <code>aac_database.sqlite</code></span>
+              </div>
+              <span class="badge badge-success" style="background: rgba(16, 185, 129, 0.15); color: #059669; border: 1px solid rgba(16, 185, 129, 0.35);">
+                ● SQLite Active
+              </span>
+            </div>
+
+            <p style="font-size: 0.84rem; color: var(--text-secondary);">
+              All 10 categories, caregiver custom phrases, paired hardware, and sync history are saved in <code>aac_database.sqlite</code>. You can open and inspect this database in <strong>DB Browser for SQLite</strong>.
+            </p>
+
+            <div>
+              <button class="btn btn-secondary btn-sm" id="btnRefreshFromDb">
+                <span>🔄</span> Refresh from SQLite
+              </button>
+            </div>
+          </div>
+
+          <!-- 7. Reset & Defaults -->
+          <div class="settings-card danger-zone-card">
+            <div class="settings-card-head">
+              <div class="settings-card-icon" style="color: #ef4444;">⚠️</div>
+              <div class="settings-card-title">
+                <h3>Reset &amp; Unpair Device</h3>
+                <p>Clear customizations or unpair physical communicator</p>
+              </div>
+            </div>
+
+            <p style="font-size: 0.84rem; color: var(--text-secondary);">
+              Reset the library to original starter phrases or disconnect the paired AAC-PRO-8892 device.
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <button class="btn btn-secondary text-danger" id="btnUnpairDeviceSettings">
+                Unpair Device
+              </button>
+              <button class="btn btn-secondary text-danger" id="btnResetDefaultsSettings">
+                Reset to Defaults
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Add / Edit Phrase Modal Form -->
+  <div class="modal-overlay" id="phraseModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="phraseModalTitle">+ Add New Communication Phrase</h3>
+        <button class="modal-close" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="phraseForm">
+        <div class="modal-body">
+          
+          <!-- Field 1: Phrase Text Input -->
+          <div class="form-group">
+            <label for="modalPhraseText">
+              <span>Communication Phrase <span class="text-danger">*</span></span>
+              <span class="form-help">Real-world request, need, or feeling</span>
+            </label>
+            <div class="input-with-button">
+              <input type="text" id="modalPhraseText" class="form-input" placeholder="e.g. I want my mother." required autocomplete="off">
+              <button type="button" class="btn-inline-tool" id="btnPreviewModalVoice" title="Listen to phrase voice synthesis">
+                <span>🔊</span> Listen
+              </button>
+            </div>
+          </div>
+
+          <!-- Field 2 & 3: Category & Age Group -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="modalPhraseCategory">Category</label>
+              <select id="modalPhraseCategory" class="form-select" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="modalPhraseAge">Age Group</label>
+              <select id="modalPhraseAge" class="form-select">
+                <option value="Children">Children</option>
+                <option value="Teenagers">Teenagers</option>
+                <option value="Adults">Adults</option>
+                <option value="All Ages">All Ages</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Field 4: Priority -->
+          <div class="form-group">
+            <label for="modalPhrasePriority">Priority Level</label>
+            <select id="modalPhrasePriority" class="form-select">
+              <option value="Normal">Normal (Standard communication tile)</option>
+              <option value="Important">Important (Highlighted border &amp; accent)</option>
+              <option value="Emergency">Emergency (High urgency, visual distinction)</option>
+            </select>
+          </div>
+
+          <!-- Field 5: Icon Picker (Interactive Grid) -->
+          <div class="form-group">
+            <label>
+              <span>Visual Symbol / Icon</span>
+              <span class="form-help">Select an icon to accompany the phrase</span>
+            </label>
+            <div class="icon-picker-scroll">
+              <div class="icon-picker-grid" id="modalIconGrid">
+                <!-- Dynamically populated icon choices -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Field 6: Enable Phrase Toggle -->
+          <div class="form-switch-row">
+            <div class="switch-label-group">
+              <span class="switch-title">Enable Phrase on Device</span>
+              <span class="switch-desc">Make available immediately in device preview and physical device sync</span>
+            </div>
+            <label class="toggle-switch-wrap">
+              <input type="checkbox" id="modalPhraseEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-modal-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitPhrase">Add Phrase</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Move Category Modal -->
+  <div class="modal-overlay" id="moveCategoryModal">
+    <div class="modal-window" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3><span>📁</span> Move Phrase Category</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Select a new category for <strong id="moveModalPhraseText"></strong>:</p>
+        <div class="form-group">
+          <select id="moveCategorySelect" class="form-select"></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-modal-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmMoveCategory">Update Category</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" id="deleteConfirmModal">
+    <div class="modal-window" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3><span>🗑️</span> Delete Custom Phrase</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this custom phrase from your personal library?</p>
+        <div style="padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+          <strong id="deletePhraseText" style="color: #fca5a5;"></strong>
+        </div>
+        <p class="form-help">This will immediately remove it from the device configuration.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-modal-cancel">Keep Phrase</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Delete Phrase</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sync to Device Progress Simulation Modal -->
+  <div class="modal-overlay" id="syncProgressModal">
+    <div class="modal-window sync-modal-window">
+      <div class="modal-header">
+        <h3><span>🔄</span> Physical AAC Device Synchronization</h3>
+      </div>
+      <div class="modal-body">
+        <div class="sync-graphic-wrap">
+          <div class="sync-device-icon">📱</div>
+          <div class="sync-progress-outer">
+            <div class="sync-progress-bar" id="syncProgressBar"></div>
+          </div>
+          <div class="sync-status-msg" id="syncStageText">Preparing configuration payload...</div>
+          <div class="sync-success-banner" id="syncSuccessMark">
+            <span>✓</span> Configuration successfully applied to AAC-Pro Go!
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button type="button" class="btn btn-primary hidden" id="btnSyncDone">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Mount Point -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- JavaScript Modules -->
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/storage.js"></script>
+  <script type="module" src="js/speech.js"></script>
+  <script type="module" src="js/device.js"></script>
+  <script type="module" src="js/qrScanner.js"></script>
+  <script type="module" src="js/app.js"></script>
+
+</body>
+</html>

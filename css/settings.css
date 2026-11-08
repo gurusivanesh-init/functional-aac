@@ -1,0 +1,302 @@
+/* Settings Tab Styling */
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 1040px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.settings-header-banner {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.settings-banner-info h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.settings-banner-info p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+/* Settings Sections Grid */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 850px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.settings-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.settings-card:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
+}
+
+.settings-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.settings-card-icon {
+  font-size: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--bg-surface-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-card-title h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.settings-card-title p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* Theme Selection Cards inside Settings */
+.theme-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.theme-option-card {
+  border: 2px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--transition-fast);
+  background: var(--bg-surface-elevated);
+}
+
+.theme-option-card:hover {
+  border-color: var(--border-medium);
+}
+
+.theme-option-card.selected {
+  border-color: var(--accent-indigo);
+  background: rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 12px var(--accent-indigo-glow);
+}
+
+.theme-option-icon {
+  font-size: 24px;
+}
+
+.theme-option-card strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.theme-option-card span {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+/* Settings Form Controls */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.setting-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting-label strong {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.setting-label span {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+/* Range Slider Styling */
+.range-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.range-slider {
+  flex: 1;
+  accent-color: var(--accent-indigo);
+  height: 6px;
+  border-radius: 4px;
+  background: var(--bg-surface-elevated);
+  cursor: pointer;
+}
+
+.range-slider-val {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 44px;
+  text-align: right;
+}
+
+/* Grid density pills */
+.density-options-wrap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.density-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px 4px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.density-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.density-btn.selected {
+  background: var(--accent-indigo);
+  border-color: var(--accent-indigo);
+  color: #ffffff;
+  box-shadow: 0 2px 10px var(--accent-indigo-glow);
+}
+
+/* Profile switch pills */
+.profile-pill-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+@media (max-width: 500px) {
+  .profile-pill-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.profile-pill-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.profile-pill-btn:hover {
+  color: var(--text-primary);
+}
+
+.profile-pill-btn.selected {
+  background: var(--accent-indigo);
+  border-color: var(--accent-indigo);
+  color: #ffffff;
+}
+
+/* Device Hardware Box inside Settings */
+.device-hardware-info {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.device-hardware-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.device-hardware-icon {
+  font-size: 26px;
+}
+
+.device-hardware-meta strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.device-hardware-meta span {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* Danger Zone */
+.danger-zone-card {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.danger-zone-card:hover {
+  border-color: var(--emergency-red);
+}
